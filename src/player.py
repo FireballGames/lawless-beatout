@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import game
+
 import animation
 import pygame
 import pyganim
 
 
 MOVE_SPEED = 7
-WIDTH = 22
-HEIGHT = 32
 COLOR = "#888888"
 JUMP_POWER = 10
 GRAVITY = 0.35
@@ -24,10 +24,10 @@ class Player(pygame.sprite.Sprite):
             "y": 0,
         }
 
-        self.image = pygame.Surface((WIDTH, HEIGHT))
+        self.image = pygame.Surface(game.PLAYER_SIZE)
         self.image.fill(pygame.Color(COLOR))
 
-        self.rect = pygame.Rect(x, y, WIDTH, HEIGHT)
+        self.rect = pygame.Rect(x, y, game.PLAYER_SIZE[0], game.PLAYER_SIZE[1])
         self.onGround = False
 
         self.states = {
@@ -38,18 +38,10 @@ class Player(pygame.sprite.Sprite):
 
         self.image.set_colorkey(pygame.Color(COLOR))
 
-        boltAnim = []
-        for anim in animation.RIGHT:
-            boltAnim.append((anim, animation.DELAY))
-        print(boltAnim)
-        self.boltAnimRight = pyganim.PygAnimation(boltAnim)
+        self.boltAnimRight = pyganim.PygAnimation(animation.RIGHT)
         self.boltAnimRight.play()
 
-        boltAnim = []
-        for anim in animation.LEFT:
-            boltAnim.append((anim, animation.DELAY))
-        print(boltAnim)
-        self.boltAnimLeft = pyganim.PygAnimation(boltAnim)
+        self.boltAnimLeft = pyganim.PygAnimation(animation.LEFT)
         self.boltAnimLeft.play()
 
         self.boltAnimStay = pyganim.PygAnimation(animation.STAY)
