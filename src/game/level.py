@@ -2,13 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import d2game.level
+
 import config
 import game
-import game.blocks
+import game.enemy
 
 import pygame
+import random
 
 
+ARENA_POS = (0, 400)
+ARENA_SIZE = (800, 200)
 ENEMY_COUNT = 5
 
 
@@ -22,6 +26,8 @@ class Level(d2game.level.Level):
         self.enemies = []
 
         for i in range(ENEMY_COUNT):
-            enemy = game.blocks.Platform(i*50, i*50)
+            x = random.randint(0, ARENA_SIZE[0]) + ARENA_POS[0]
+            y = random.randint(0, ARENA_SIZE[1]) + ARENA_POS[1] - game.enemy.ENEMY_SIZE[1]
+            enemy = game.enemy.Enemy(x, y)
             self.entities.add(enemy)
             self.enemies.append(enemy)
