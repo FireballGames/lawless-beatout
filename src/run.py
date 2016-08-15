@@ -7,13 +7,9 @@ import pygame
 from pygame import *
 
 from player import Player
+from blocks import Platform, PLATFORM_WIDTH, PLATFORM_HEIGHT
 
 RUNNING = True
-
-PLATFORM_HEIGHT = 32
-PLATFORM_WIDTH = 32
-PLATFORM_COLOR = "#FF6262"
-
 LEVEL = [
     "-------------------------",
     "-                       -",
@@ -51,6 +47,21 @@ def main():
     left = right = False
     up = False
 
+    entities = pygame.sprite.Group()
+    platforms = []
+    entities.add(hero)
+
+    x=y=0
+    for row in LEVEL:
+        for col in row:
+            if col == "-":
+                pf = Platform(x, y)
+                entities.add(pf)
+                platforms.append(pf)
+            x += PLATFORM_WIDTH
+        y += PLATFORM_HEIGHT
+        x = 0
+
     timer = pygame.time.Clock()
 
     while RUNNING: # Основной цикл программы
@@ -72,19 +83,8 @@ def main():
 
         screen.blit(bg, (0,0))
 
-        x=y=0
-        for row in LEVEL:
-            for col in row:
-                if col == "-":
-                    pf = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
-                    pf.fill(Color(PLATFORM_COLOR))
-                    screen.blit(pf, (x, y))
-                x += PLATFORM_WIDTH
-            y += PLATFORM_HEIGHT
-            x = 0
-
         hero.update(left, right, up)
-        hero.draw(screen)
+        entities.draw(screen)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
         timer.tick(60)
