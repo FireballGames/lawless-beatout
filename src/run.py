@@ -3,11 +3,11 @@
 
 import d2game
 import d2gui
-import config
-# import game
+
+# import config
+import game
 
 import pygame
-from pygame import *
 
 from player import Player
 from level import Level
@@ -16,23 +16,23 @@ def main():
     g = d2game.Game()
     gui = d2gui.GUI()
 
-    hero = Player(55, 55)
+    g.hero = Player(*game.PLAYER_START)
 
-    gui.entities.add(hero)
-    l = Level(gui.entities)
+    gui.entities.add(g.hero)
+    g.l = Level(gui.entities)
 
     g.run()
 
     while g.is_running():
         for e in pygame.event.get(): # Обрабатываем события
-            if e.type == QUIT:
+            if e.type == pygame.QUIT:
                 g.quit()
-            if e.type == KEYDOWN:
-                gui.key_down(e.key, hero)
-            if e.type == KEYUP:
-                gui.key_up(e.key, hero)
+            if e.type == pygame.KEYDOWN:
+                gui.key_down(e.key, g.hero)
+            if e.type == pygame.KEYUP:
+                gui.key_up(e.key, g.hero)
 
-        hero.update(l.platforms)
+        g.hero.update(g.l.platforms)
         gui.draw()
 
 if __name__ == "__main__":

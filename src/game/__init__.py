@@ -2,3 +2,4 @@
 # -*- coding: utf-8 -*-
 
 TITLE = "Beat'em up"
+PLAYER_START = (55, 55)

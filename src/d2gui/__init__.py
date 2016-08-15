@@ -6,6 +6,13 @@ import config
 import game
 
 
+DIR_KEYS = {
+    pygame.K_LEFT: "left",
+    pygame.K_RIGHT: "right",
+    pygame.K_UP: "up",
+}
+
+
 def background(display):
     bg = pygame.Surface(display) # Создание видимой поверхности
                           # будем использовать как фон
@@ -30,17 +37,11 @@ class GUI():
         self.timer.tick(60)
 
     def key_down(self, key, hero):
-        if key == pygame.K_LEFT:
-            hero.left = True
-        if key == pygame.K_RIGHT:
-            hero.right = True
-        if key == pygame.K_UP:
-            hero.up = True
+        direction = DIR_KEYS.get(key)
+        if direction:
+            hero.go(direction, True)
 
     def key_up(self, key, hero):
-        if key == pygame.K_LEFT:
-            hero.left = False
-        if key == pygame.K_RIGHT:
-            hero.right = False
-        if key == pygame.K_UP:
-            hero.up = False
+        direction = DIR_KEYS.get(key)
+        if direction:
+            hero.go(direction, False)
