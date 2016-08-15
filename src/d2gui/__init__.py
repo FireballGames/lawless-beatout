@@ -10,6 +10,7 @@ DIR_KEYS = {
     pygame.K_LEFT: "left",
     pygame.K_RIGHT: "right",
     pygame.K_UP: "up",
+    pygame.K_DOWN: "down",
 }
 
 

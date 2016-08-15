@@ -13,6 +13,7 @@ import random
 ARENA_POS = (0, 400)
 ARENA_SIZE = (800, 200)
 ENEMY_COUNT = 5
+# GRAVITY = 0.35
 
 
 class Level(d2game.level.Level):

@@ -13,9 +13,8 @@ import pyganim
 START_POS = (400, 300)
 PLAYER_SIZE = (73, 100)
 MOVE_SPEED = 7
-COLOR = "#888888"
+TRANSPARENT_COLOR = "#888888"
 JUMP_POWER = 10
-GRAVITY = 0.35
 
 
 class PlayerState():
@@ -24,7 +23,7 @@ class PlayerState():
         self.anim = None
 
     def animate(self, player):
-        player.image.fill(pygame.Color(COLOR))
+        player.image.fill(pygame.Color(TRANSPARENT_COLOR))
         self.anim.blit(player.image, (0,0))
 
 
@@ -38,28 +37,31 @@ class Player(d2game.player.Player):
         self.speed = [0, 0]
 
         self.image = pygame.Surface(PLAYER_SIZE)
-        self.image.fill(pygame.Color(COLOR))
+        self.image.fill(pygame.Color(TRANSPARENT_COLOR))
 
         self.rect = pygame.Rect(x, y, PLAYER_SIZE[0], PLAYER_SIZE[1])
         self.onGround = True
 
+        s_stay = PlayerState()
         s_right = PlayerState()
         s_left = PlayerState()
         s_up = PlayerState()
+        s_down = PlayerState()
         s_jump_right = PlayerState()
         s_jump_left = PlayerState()
-        s_stay = PlayerState()
 
         self.states = {
             "stay": s_stay,
             "right": s_right,
-            "jump_right": s_jump_right,
             "left": s_left,
+            "jump": s_jump_right,
+            "jump_right": s_jump_right,
             "jump_left": s_jump_left,
             "up": s_up,
+            "down": s_down,
         }
 
-        self.image.set_colorkey(pygame.Color(COLOR))
+        self.image.set_colorkey(pygame.Color(TRANSPARENT_COLOR))
 
         s_right.anim = pyganim.PygAnimation(game.animation.RIGHT)
         s_right.anim.play()
@@ -74,44 +76,56 @@ class Player(d2game.player.Player):
         s_jump_left.anim.play()
         s_jump_right.anim = pyganim.PygAnimation(game.animation.JUMP_RIGHT)
         s_jump_right.anim.play()
+
         s_up.anim = pyganim.PygAnimation(game.animation.JUMP)
         s_up.anim.play()
+
+        s_down.anim = pyganim.PygAnimation(game.animation.JUMP)
+        s_down.anim.play()
 
         s_stay.animate(self)
 
 
     def go(self, direction, going):
+        print(direction, going)
         self.states[direction].value = going
+        print([self.states[s].value for s in self.states.keys()])
 
     def is_going(self, direction):
         return self.states[direction].value
+
+    def is_staying(self):
+        return not(self.is_going("left") or self.is_going("right") or self.is_going("up") or self.is_going("down"))
 
     def jump(self):
         if self.onGround:
             self.speed[1] = -JUMP_POWER
 
     def fall(self):
-        self.speed[1] += GRAVITY
+        self.speed[1] += 0 # GRAVITY
 
     def update(self, level):
         if self.is_going("left"):
             self.speed[0] = -MOVE_SPEED
             self.states["left"].animate(self)
-            if self.is_going("up"):
-                self.states["jump_left"].animate(self)
         if self.is_going("right"):
             self.speed[0] = MOVE_SPEED
             self.states["right"].animate(self)
-            if self.is_going("up"):
-                self.states["jump_right"].animate(self)
 
-        if not (self.is_going("left") or self.is_going("right")):
+        if self.is_staying():
             self.speed[0] = 0
+            self.speed[1] = 0
             self.states["stay"].animate(self)
 
         if self.is_going("up"):
-            self.jump()
+            self.speed[1] = -MOVE_SPEED
             self.states["up"].animate(self)
+        if self.is_going("down"):
+            self.speed[1] = MOVE_SPEED
+            self.states["down"].animate(self)
+
+        if self.is_going("jump"):
+            self.jump()
 
         if not self.onGround:
             self.fall()
