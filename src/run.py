@@ -49,6 +49,7 @@ def main():
 
     hero = Player(55, 55)
     left = right = False
+    up = False
 
     timer = pygame.time.Clock()
 
@@ -60,10 +61,14 @@ def main():
                 left = True
             if e.type == KEYDOWN and e.key == K_RIGHT:
                 right = True
+            if e.type == KEYDOWN and e.key == K_UP:
+                up = True
             if e.type == KEYUP and e.key == K_LEFT:
                 left = False
             if e.type == KEYUP and e.key == K_RIGHT:
                 right = False
+            if e.type == KEYUP and e.key == K_UP:
+                up = False
 
         screen.blit(bg, (0,0))
 
@@ -78,7 +83,7 @@ def main():
             y += PLATFORM_HEIGHT
             x = 0
 
-        hero.update(left, right)
+        hero.update(left, right, up)
         hero.draw(screen)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
