@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import config
+
 import pygame
 from pygame import *
 
-WIN_WIDTH = 800 #Ширина создаваемого окна
-WIN_HEIGHT = 640 # Высота
-BACKGROUND_COLOR = "#004400"
+from player import Player
+
 RUNNING = True
 
 PLATFORM_HEIGHT = 32
@@ -38,18 +39,33 @@ LEVEL = [
 
 
 def main():
-    DISPLAY = (WIN_WIDTH, WIN_HEIGHT) # Группируем ширину и высоту в одну переменную
+    DISPLAY = (config.WIN_WIDTH, config.WIN_HEIGHT) # Группируем ширину и высоту в одну переменную
     pygame.init() # Инициация PyGame, обязательная строчка
     screen = pygame.display.set_mode(DISPLAY) # Создаем окошко
     pygame.display.set_caption("Beat'em Up")
-    bg = Surface((WIN_WIDTH,WIN_HEIGHT)) # Создание видимой поверхности
-                                         # будем использовать как фон
-    bg.fill(Color(BACKGROUND_COLOR))     # Заливаем поверхность сплошным цветом
+    bg = Surface(DISPLAY) # Создание видимой поверхности
+                          # будем использовать как фон
+    bg.fill(Color(config.BACKGROUND_COLOR))     # Заливаем поверхность сплошным цветом
+
+    hero = Player(55, 55)
+    left = right = False
+
+    timer = pygame.time.Clock()
 
     while RUNNING: # Основной цикл программы
         for e in pygame.event.get(): # Обрабатываем события
             if e.type == QUIT:
                 raise (SystemExit, "QUIT")
+            if e.type == KEYDOWN and e.key == K_LEFT:
+                left = True
+            if e.type == KEYDOWN and e.key == K_RIGHT:
+                right = True
+            if e.type == KEYUP and e.key == K_LEFT:
+                left = False
+            if e.type == KEYUP and e.key == K_RIGHT:
+                right = False
+
+        screen.blit(bg, (0,0))
 
         x=y=0
         for row in LEVEL:
@@ -58,11 +74,15 @@ def main():
                     pf = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
                     pf.fill(Color(PLATFORM_COLOR))
                     screen.blit(pf, (x, y))
-                    pygame.display.update()     # обновление и вывод всех изменений на экран
                 x += PLATFORM_WIDTH
             y += PLATFORM_HEIGHT
             x = 0
 
+        hero.update(left, right)
+        hero.draw(screen)
+
+        pygame.display.update()     # обновление и вывод всех изменений на экран
+        timer.tick(60)
 
 if __name__ == "__main__":
     main()
