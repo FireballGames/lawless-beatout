@@ -24,16 +24,20 @@ class Player(sprite.Sprite):
         self.rect = Rect(x, y, WIDTH, HEIGHT)
         self.onGround = False
 
-    def update(self, left, right, up, platforms):
-        if left:
+        self.right = False
+        self.left = False
+        self.up = False
+
+    def update(self, platforms):
+        if self.left:
             self.xvel = -MOVE_SPEED
-        if right:
+        if self.right:
             self.xvel = MOVE_SPEED
 
-        if not (left or right):
+        if not (self.left or self.right):
             self.xvel = 0
 
-        if up:
+        if self.up:
             if self.onGround:
                 self.yvel = -JUMP_POWER
 

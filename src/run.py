@@ -17,8 +17,6 @@ def main():
     gui = d2gui.GUI()
 
     hero = Player(55, 55)
-    left = right = False
-    up = False
 
     gui.entities.add(hero)
     l = Level(gui.entities)
@@ -30,19 +28,19 @@ def main():
             if e.type == QUIT:
                 g.quit()
             if e.type == KEYDOWN and e.key == K_LEFT:
-                left = True
+                hero.left = True
             if e.type == KEYDOWN and e.key == K_RIGHT:
-                right = True
+                hero.right = True
             if e.type == KEYDOWN and e.key == K_UP:
-                up = True
+                hero.up = True
             if e.type == KEYUP and e.key == K_LEFT:
-                left = False
+                hero.left = False
             if e.type == KEYUP and e.key == K_RIGHT:
-                right = False
+                hero.right = False
             if e.type == KEYUP and e.key == K_UP:
-                up = False
+                hero.up = False
 
-        hero.update(left, right, up, l.platforms)
+        hero.update(l.platforms)
         gui.draw()
 
 if __name__ == "__main__":

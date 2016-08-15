@@ -24,7 +24,7 @@ class GUI():
 
     def draw(self):
         self.screen.blit(self.bg, (0,0))
-        self.entities.draw(self..screen)
+        self.entities.draw(self.screen)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
         self.timer.tick(60)
