@@ -14,8 +14,8 @@ class Game():
         self.state = STATE_START
         self.hero = self.new_hero()
 
-    def run(self, e):
-        self.next_level(e)
+    def run(self):
+        self.next_level()
         self.state = STATE_RUNNING
 
     def turn(self):
@@ -28,8 +28,8 @@ class Game():
     def new_hero(self):
         return d2game.player.Player()
 
-    def next_level(self, e):
-        self.level = d2game.level.Level()
+    def next_level(self):
+        self.level = d2game.level.Level(self.hero)
         return self.level
 
     def is_running(self):

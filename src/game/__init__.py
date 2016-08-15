@@ -14,6 +14,6 @@ class Game(d2game.Game):
     def new_hero(self):
         return game.player.Player(*game.player.START_POS)
 
-    def next_level(self, e):
-        self.level = game.level.Level(e)
+    def next_level(self):
+        self.level = game.level.Level(self.hero)
         return self.level

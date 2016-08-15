@@ -13,7 +13,7 @@ def main():
     g = game.Game()
 
     gui.set_game(g)
-    g.run(gui.entities)
+    g.run()
 
     while g.is_running():
         gui.process_events()

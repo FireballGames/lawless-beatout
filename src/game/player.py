@@ -41,7 +41,7 @@ class Player(d2game.player.Player):
         self.image.fill(pygame.Color(COLOR))
 
         self.rect = pygame.Rect(x, y, PLAYER_SIZE[0], PLAYER_SIZE[1])
-        self.onGround = False
+        self.onGround = True
 
         s_right = PlayerState()
         s_left = PlayerState()
@@ -116,12 +116,12 @@ class Player(d2game.player.Player):
         if not self.onGround:
             self.fall()
 
-        self.onGround = False
+        self.onGround = True
 
         self.rect.y += self.speed[1]
-        self.collide(0, self.speed[1], level.platforms)
+        self.collide(0, self.speed[1], level.enemies)
         self.rect.x += self.speed[0]
-        self.collide(self.speed[0], 0, level.platforms)
+        self.collide(self.speed[0], 0, level.enemies)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:

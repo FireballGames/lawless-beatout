@@ -26,7 +26,7 @@ class GUI():
         self.screen = pygame.display.set_mode(config.DISPLAY)
         pygame.display.set_caption(game.TITLE)
         self.bg = background(config.DISPLAY)
-        self.entities = pygame.sprite.Group()
+        self.entities = None # pygame.sprite.Group()
         self.timer = pygame.time.Clock()
         self.game = None
         self.player = None
@@ -35,13 +35,13 @@ class GUI():
         self.game = g
         self.player = self.game.hero
 
-        self.entities.add(self.player)
+        # self.entities.add(self.player)
 
     def draw(self):
         self.bg = pygame.image.load(self.game.level.background)
 
         self.screen.blit(self.bg, (0,0))
-        self.entities.draw(self.screen)
+        self.game.level.entities.draw(self.screen)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
         self.timer.tick(30)
