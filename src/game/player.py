@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import d2game.player
+
 import game
 import game.animation
 
@@ -8,102 +10,118 @@ import pygame
 import pyganim
 
 
+START_POS = (400, 300)
+PLAYER_SIZE = (73, 100)
 MOVE_SPEED = 7
 COLOR = "#888888"
 JUMP_POWER = 10
 GRAVITY = 0.35
 
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.startX = x
-        self.startY = y
-        self.speed = {
-            "x": 0,
-            "y": 0,
-        }
+class PlayerState():
+    def __init__(self):
+        self.value = False
+        self.anim = None
 
-        self.image = pygame.Surface(game.PLAYER_SIZE)
+    def animate(self, player):
+        player.image.fill(pygame.Color(COLOR))
+        self.anim.blit(player.image, (0,0))
+
+
+class Player(d2game.player.Player):
+    def __init__(self, x, y):
+        d2game.player.Player.__init__(self)
+
+        # self.startX = x
+        # self.startY = y
+        self.pos = START_POS
+        self.speed = [0, 0]
+
+        self.image = pygame.Surface(PLAYER_SIZE)
         self.image.fill(pygame.Color(COLOR))
 
-        self.rect = pygame.Rect(x, y, game.PLAYER_SIZE[0], game.PLAYER_SIZE[1])
+        self.rect = pygame.Rect(x, y, PLAYER_SIZE[0], PLAYER_SIZE[1])
         self.onGround = False
 
+        s_right = PlayerState()
+        s_left = PlayerState()
+        s_up = PlayerState()
+        s_jump_right = PlayerState()
+        s_jump_left = PlayerState()
+        s_stay = PlayerState()
+
         self.states = {
-            "right": False,
-            "left": False,
-            "up": False,
+            "stay": s_stay,
+            "right": s_right,
+            "jump_right": s_jump_right,
+            "left": s_left,
+            "jump_left": s_jump_left,
+            "up": s_up,
         }
 
         self.image.set_colorkey(pygame.Color(COLOR))
 
-        self.boltAnimRight = pyganim.PygAnimation(game.animation.RIGHT)
-        self.boltAnimRight.play()
+        s_right.anim = pyganim.PygAnimation(game.animation.RIGHT)
+        s_right.anim.play()
 
-        self.boltAnimLeft = pyganim.PygAnimation(game.animation.LEFT)
-        self.boltAnimLeft.play()
+        s_left.anim = pyganim.PygAnimation(game.animation.LEFT)
+        s_left.anim.play()
 
-        self.boltAnimStay = pyganim.PygAnimation(game.animation.STAY)
-        self.boltAnimStay.play()
-        self.boltAnimStay.blit(self.image, (0, 0))
+        s_stay.anim = pyganim.PygAnimation(game.animation.STAY)
+        s_stay.anim.play()
 
-        self.boltAnimJumpLeft = pyganim.PygAnimation(game.animation.JUMP_LEFT)
-        self.boltAnimJumpLeft.play()
-        self.boltAnimJumpRight = pyganim.PygAnimation(game.animation.JUMP_RIGHT)
-        self.boltAnimJumpRight.play()
-        self.boltAnimJump = pyganim.PygAnimation(game.animation.JUMP)
-        self.boltAnimJump.play()
+        s_jump_left.anim = pyganim.PygAnimation(game.animation.JUMP_LEFT)
+        s_jump_left.anim.play()
+        s_jump_right.anim = pyganim.PygAnimation(game.animation.JUMP_RIGHT)
+        s_jump_right.anim.play()
+        s_up.anim = pyganim.PygAnimation(game.animation.JUMP)
+        s_up.anim.play()
+
+        s_stay.animate(self)
 
 
     def go(self, direction, going):
-        self.states[direction] = going
+        self.states[direction].value = going
 
     def is_going(self, direction):
-        return self.states[direction]
+        return self.states[direction].value
 
     def jump(self):
         if self.onGround:
-            self.speed["y"] = -JUMP_POWER
+            self.speed[1] = -JUMP_POWER
 
     def fall(self):
-        self.speed["y"] += GRAVITY
+        self.speed[1] += GRAVITY
 
     def update(self, level):
         if self.is_going("left"):
-            self.speed["x"] = -MOVE_SPEED
-            self.image.fill(pygame.Color(COLOR))
-            self.boltAnimLeft.blit(self.image, (0,0))
+            self.speed[0] = -MOVE_SPEED
+            self.states["left"].animate(self)
             if self.is_going("up"):
-                self.image.fill(pygame.Color(COLOR))
-                self.boltAnimJumpLeft.blit(self.image, (0,0))
+                self.states["jump_left"].animate(self)
         if self.is_going("right"):
-            self.speed["x"] = MOVE_SPEED
-            self.image.fill(pygame.Color(COLOR))
-            self.boltAnimRight.blit(self.image, (0,0))
+            self.speed[0] = MOVE_SPEED
+            self.states["right"].animate(self)
             if self.is_going("up"):
-                self.image.fill(pygame.Color(COLOR))
-                self.boltAnimJumpRight.blit(self.image, (0,0))
+                self.states["jump_right"].animate(self)
 
         if not (self.is_going("left") or self.is_going("right")):
-            self.speed["x"] = 0
-            self.image.fill(pygame.Color(COLOR))
-            self.boltAnimStay.blit(self.image, (0,0))
+            self.speed[0] = 0
+            self.states["stay"].animate(self)
 
         if self.is_going("up"):
             self.jump()
-            self.image.fill(pygame.Color(COLOR))
-            self.boltAnimJump.blit(self.image, (0,0))
+            self.states["up"].animate(self)
 
         if not self.onGround:
             self.fall()
 
         self.onGround = False
 
-        self.rect.y += self.speed["y"]
-        self.collide(0, self.speed["y"], level.platforms)
-        self.rect.x += self.speed["x"]
-        self.collide(self.speed["x"], 0, level.platforms)
+        self.rect.y += self.speed[1]
+        self.collide(0, self.speed[1], level.platforms)
+        self.rect.x += self.speed[0]
+        self.collide(self.speed[0], 0, level.platforms)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
@@ -114,8 +132,8 @@ class Player(pygame.sprite.Sprite):
                     self.rect.left = p.rect.right
                 if yvel > 0:
                     self.rect.bottom = p.rect.top
-                    self.speed["y"] = 0
+                    self.speed[1] = 0
                     self.onGround = True
                 if yvel < 0:
                     self.rect.top = p.rect.bottom
-                    self.speed["y"] = 0
+                    self.speed[1] = 0
