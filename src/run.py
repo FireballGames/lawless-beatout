@@ -8,30 +8,9 @@ from pygame import *
 
 from player import Player
 from blocks import Platform, PLATFORM_WIDTH, PLATFORM_HEIGHT
+from level import Level
 
 RUNNING = True
-LEVEL = [
-    "-------------------------",
-    "-                       -",
-    "-                       -",
-    "-                       -",
-    "-            --         -",
-    "-                       -",
-    "--                      -",
-    "-                       -",
-    "-                   --- -",
-    "-                       -",
-    "-                       -",
-    "-      ---              -",
-    "-                       -",
-    "--   -----------        -",
-    "-                       -",
-    "-                -      -",
-    "-                   --  -",
-    "-                       -",
-    "-                       -",
-    "-------------------------"]
-
 
 
 def main():
@@ -48,19 +27,8 @@ def main():
     up = False
 
     entities = pygame.sprite.Group()
-    platforms = []
     entities.add(hero)
-
-    x=y=0
-    for row in LEVEL:
-        for col in row:
-            if col == "-":
-                pf = Platform(x, y)
-                entities.add(pf)
-                platforms.append(pf)
-            x += PLATFORM_WIDTH
-        y += PLATFORM_HEIGHT
-        x = 0
+    l = Level(entities)
 
     timer = pygame.time.Clock()
 
@@ -83,7 +51,7 @@ def main():
 
         screen.blit(bg, (0,0))
 
-        hero.update(left, right, up, platforms)
+        hero.update(left, right, up, l.platforms)
         entities.draw(screen)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
