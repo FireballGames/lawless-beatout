@@ -27,18 +27,10 @@ def main():
         for e in pygame.event.get(): # Обрабатываем события
             if e.type == QUIT:
                 g.quit()
-            if e.type == KEYDOWN and e.key == K_LEFT:
-                hero.left = True
-            if e.type == KEYDOWN and e.key == K_RIGHT:
-                hero.right = True
-            if e.type == KEYDOWN and e.key == K_UP:
-                hero.up = True
-            if e.type == KEYUP and e.key == K_LEFT:
-                hero.left = False
-            if e.type == KEYUP and e.key == K_RIGHT:
-                hero.right = False
-            if e.type == KEYUP and e.key == K_UP:
-                hero.up = False
+            if e.type == KEYDOWN:
+                gui.key_down(e.key, hero)
+            if e.type == KEYUP:
+                gui.key_up(e.key, hero)
 
         hero.update(l.platforms)
         gui.draw()

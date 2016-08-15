@@ -28,3 +28,19 @@ class GUI():
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
         self.timer.tick(60)
+
+    def key_down(self, key, hero):
+        if key == pygame.K_LEFT:
+            hero.left = True
+        if key == pygame.K_RIGHT:
+            hero.right = True
+        if key == pygame.K_UP:
+            hero.up = True
+
+    def key_up(self, key, hero):
+        if key == pygame.K_LEFT:
+            hero.left = False
+        if key == pygame.K_RIGHT:
+            hero.right = False
+        if key == pygame.K_UP:
+            hero.up = False
