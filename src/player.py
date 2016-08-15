@@ -45,7 +45,7 @@ class Player(sprite.Sprite):
     def fall(self):
         self.speed["y"] += GRAVITY
 
-    def update(self, platforms):
+    def update(self, level):
         if self.is_going("left"):
             self.speed["x"] = -MOVE_SPEED
         if self.is_going("right"):
@@ -63,9 +63,9 @@ class Player(sprite.Sprite):
         self.onGround = False
 
         self.rect.y += self.speed["y"]
-        self.collide(0, self.speed["y"], platforms)
+        self.collide(0, self.speed["y"], level.platforms)
         self.rect.x += self.speed["x"]
-        self.collide(self.speed["x"], 0, platforms)
+        self.collide(self.speed["x"], 0, level.platforms)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:

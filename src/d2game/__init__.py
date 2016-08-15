@@ -3,6 +3,7 @@
 
 import game
 import player
+import level
 
 STATE_START = 0
 STATE_RUNNING = 1
@@ -13,11 +14,12 @@ class Game():
         self.state = STATE_START
         self.hero = player.Player(*game.PLAYER_START)
 
-    def run(self):
+    def run(self, e):
+        self.level = level.Level(e)
         self.state = STATE_RUNNING
 
     def turn(self):
-        self.hero.update(self.l.platforms)
+        self.hero.update(self.level)
 
     def quit(self):
         self.state = STATE_EXIT
