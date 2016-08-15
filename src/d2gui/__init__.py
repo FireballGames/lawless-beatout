@@ -36,6 +36,15 @@ class GUI():
         pygame.display.update()     # обновление и вывод всех изменений на экран
         self.timer.tick(60)
 
+    def process_events(self, g):
+        for e in pygame.event.get(): # Обрабатываем события
+            if e.type == pygame.QUIT:
+                g.quit()
+            if e.type == pygame.KEYDOWN:
+                self.key_down(e.key, g.hero)
+            if e.type == pygame.KEYUP:
+                self.key_up(e.key, g.hero)
+
     def key_down(self, key, hero):
         direction = DIR_KEYS.get(key)
         if direction:
