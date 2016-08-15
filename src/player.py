@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pygame import *
+import animation
+import pygame
+import pyganim
 
 
 MOVE_SPEED = 7
@@ -12,18 +14,20 @@ JUMP_POWER = 10
 GRAVITY = 0.35
 
 
-class Player(sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
-        sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self)
         self.startX = x
         self.startY = y
         self.speed = {
             "x": 0,
             "y": 0,
         }
-        self.image = Surface((WIDTH, HEIGHT))
-        self.image.fill(Color(COLOR))
-        self.rect = Rect(x, y, WIDTH, HEIGHT)
+
+        self.image = pygame.Surface((WIDTH, HEIGHT))
+        self.image.fill(pygame.Color(COLOR))
+
+        self.rect = pygame.Rect(x, y, WIDTH, HEIGHT)
         self.onGround = False
 
         self.states = {
@@ -31,6 +35,34 @@ class Player(sprite.Sprite):
             "left": False,
             "up": False,
         }
+
+        self.image.set_colorkey(pygame.Color(COLOR))
+
+        boltAnim = []
+        for anim in animation.RIGHT:
+            boltAnim.append((anim, animation.DELAY))
+        print(boltAnim)
+        self.boltAnimRight = pyganim.PygAnimation(boltAnim)
+        self.boltAnimRight.play()
+
+        boltAnim = []
+        for anim in animation.LEFT:
+            boltAnim.append((anim, animation.DELAY))
+        print(boltAnim)
+        self.boltAnimLeft = pyganim.PygAnimation(boltAnim)
+        self.boltAnimLeft.play()
+
+        self.boltAnimStay = pyganim.PygAnimation(animation.STAY)
+        self.boltAnimStay.play()
+        self.boltAnimStay.blit(self.image, (0, 0))
+
+        self.boltAnimJumpLeft = pyganim.PygAnimation(animation.JUMP_LEFT)
+        self.boltAnimJumpLeft.play()
+        self.boltAnimJumpRight = pyganim.PygAnimation(animation.JUMP_RIGHT)
+        self.boltAnimJumpRight.play()
+        self.boltAnimJump = pyganim.PygAnimation(animation.JUMP)
+        self.boltAnimJump.play()
+
 
     def go(self, direction, going):
         self.states[direction] = going
@@ -48,14 +80,28 @@ class Player(sprite.Sprite):
     def update(self, level):
         if self.is_going("left"):
             self.speed["x"] = -MOVE_SPEED
+            self.image.fill(pygame.Color(COLOR))
+            self.boltAnimLeft.blit(self.image, (0,0))
+            if self.is_going("up"):
+                self.image.fill(pygame.Color(COLOR))
+                self.boltAnimJumpLeft.blit(self.image, (0,0))
         if self.is_going("right"):
             self.speed["x"] = MOVE_SPEED
+            self.image.fill(pygame.Color(COLOR))
+            self.boltAnimRight.blit(self.image, (0,0))
+            if self.is_going("up"):
+                self.image.fill(pygame.Color(COLOR))
+                self.boltAnimJumpRight.blit(self.image, (0,0))
 
         if not (self.is_going("left") or self.is_going("right")):
             self.speed["x"] = 0
+            self.image.fill(pygame.Color(COLOR))
+            self.boltAnimStay.blit(self.image, (0,0))
 
         if self.is_going("up"):
             self.jump()
+            self.image.fill(pygame.Color(COLOR))
+            self.boltAnimJump.blit(self.image, (0,0))
 
         if not self.onGround:
             self.fall()
@@ -69,7 +115,7 @@ class Player(sprite.Sprite):
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
-            if sprite.collide_rect(self, p):
+            if pygame.sprite.collide_rect(self, p):
                 if xvel > 0:
                     self.rect.right = p.rect.left
                 if xvel < 0:

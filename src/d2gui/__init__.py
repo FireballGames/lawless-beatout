@@ -42,7 +42,7 @@ class GUI():
         self.entities.draw(self.screen)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
-        self.timer.tick(60)
+        self.timer.tick(30)
 
     def process_events(self):
         for e in pygame.event.get(): # Обрабатываем события
