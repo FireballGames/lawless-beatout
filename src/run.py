@@ -83,7 +83,7 @@ def main():
 
         screen.blit(bg, (0,0))
 
-        hero.update(left, right, up)
+        hero.update(left, right, up, platforms)
         entities.draw(screen)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран

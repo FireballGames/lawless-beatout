@@ -24,7 +24,7 @@ class Player(sprite.Sprite):
         self.rect = Rect(x, y, WIDTH, HEIGHT)
         self.onGround = False
 
-    def update(self, left, right, up):
+    def update(self, left, right, up, platforms):
         if left:
             self.xvel = -MOVE_SPEED
         if right:
@@ -35,14 +35,29 @@ class Player(sprite.Sprite):
 
         if up:
             if self.onGround:
-                self.yvel = JUMP_POWER
+                self.yvel = -JUMP_POWER
 
         if not self.onGround:
             self.yvel += GRAVITY
+
         self.onGround = False
 
         self.rect.y += self.yvel
+        self.collide(0, self.yvel, platforms)
         self.rect.x += self.xvel
+        self.collide(self.xvel, 0, platforms)
 
-    def draw(self, screen):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+    def collide(self, xvel, yvel, platforms):
+        for p in platforms:
+            if sprite.collide_rect(self, p):
+                if xvel > 0:
+                    self.rect.right = p.rect.left
+                if xvel < 0:
+                    self.rect.left = p.rect.right
+                if yvel > 0:
+                    self.rect.bottom = p.rect.top
+                    self.yvel = 0
+                    self.onGround = True
+                if yvel < 0:
+                    self.rect.top = p.rect.bottom
+                    self.yvel = 0
