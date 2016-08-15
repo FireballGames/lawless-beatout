@@ -39,7 +39,7 @@ class Player(d2game.player.Player):
         self.image = pygame.Surface(PLAYER_SIZE)
         self.image.fill(pygame.Color(TRANSPARENT_COLOR))
 
-        self.rect = pygame.Rect(x, y, PLAYER_SIZE[0], PLAYER_SIZE[1])
+        self.rect = pygame.Rect((x, y), PLAYER_SIZE)
         self.onGround = True
 
         s_stay = PlayerState()
@@ -87,9 +87,7 @@ class Player(d2game.player.Player):
 
 
     def go(self, direction, going):
-        print(direction, going)
         self.states[direction].value = going
-        print([self.states[s].value for s in self.states.keys()])
 
     def is_going(self, direction):
         return self.states[direction].value
