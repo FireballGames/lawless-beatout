@@ -3,8 +3,7 @@
 
 import config
 import game
-
-from blocks import Platform
+import game.blocks
 
 LEVEL_MAP = [
     "-------------------------",
@@ -39,7 +38,7 @@ class Level():
         for row in self.level_map:
             for col in row:
                 if col == "-":
-                    pf = Platform(x, y)
+                    pf = game.blocks.Platform(x, y)
                     self.entities.add(pf)
                     self.platforms.append(pf)
                 x += pf.width

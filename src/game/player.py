@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import game
+import game.animation
 
-import animation
 import pygame
 import pyganim
 
@@ -38,21 +38,21 @@ class Player(pygame.sprite.Sprite):
 
         self.image.set_colorkey(pygame.Color(COLOR))
 
-        self.boltAnimRight = pyganim.PygAnimation(animation.RIGHT)
+        self.boltAnimRight = pyganim.PygAnimation(game.animation.RIGHT)
         self.boltAnimRight.play()
 
-        self.boltAnimLeft = pyganim.PygAnimation(animation.LEFT)
+        self.boltAnimLeft = pyganim.PygAnimation(game.animation.LEFT)
         self.boltAnimLeft.play()
 
-        self.boltAnimStay = pyganim.PygAnimation(animation.STAY)
+        self.boltAnimStay = pyganim.PygAnimation(game.animation.STAY)
         self.boltAnimStay.play()
         self.boltAnimStay.blit(self.image, (0, 0))
 
-        self.boltAnimJumpLeft = pyganim.PygAnimation(animation.JUMP_LEFT)
+        self.boltAnimJumpLeft = pyganim.PygAnimation(game.animation.JUMP_LEFT)
         self.boltAnimJumpLeft.play()
-        self.boltAnimJumpRight = pyganim.PygAnimation(animation.JUMP_RIGHT)
+        self.boltAnimJumpRight = pyganim.PygAnimation(game.animation.JUMP_RIGHT)
         self.boltAnimJumpRight.play()
-        self.boltAnimJump = pyganim.PygAnimation(animation.JUMP)
+        self.boltAnimJump = pyganim.PygAnimation(game.animation.JUMP)
         self.boltAnimJump.play()
 
 
