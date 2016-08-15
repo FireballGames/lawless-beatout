@@ -4,25 +4,19 @@
 import d2game
 import d2gui
 
-# import config
-import game
-
-import pygame
-
-from player import Player
 from level import Level
 
 def main():
     gui = d2gui.GUI()
     g = d2game.Game()
-    # gui.set_game(g)
-    gui.entities.add(g.hero)
+
+    gui.set_game(g)
     g.l = Level(gui.entities)
 
     g.run()
 
     while g.is_running():
-        gui.process_events(g)
+        gui.process_events()
         g.turn()
         gui.draw()
 

@@ -28,6 +28,14 @@ class GUI():
         self.bg = background(config.DISPLAY)
         self.entities = pygame.sprite.Group()
         self.timer = pygame.time.Clock()
+        self.game = None
+        self.player = None
+
+    def set_game(self, g):
+        self.game = g
+        self.player = self.game.hero
+
+        self.entities.add(self.player)
 
     def draw(self):
         self.screen.blit(self.bg, (0,0))
@@ -36,21 +44,16 @@ class GUI():
         pygame.display.update()     # обновление и вывод всех изменений на экран
         self.timer.tick(60)
 
-    def process_events(self, g):
+    def process_events(self):
         for e in pygame.event.get(): # Обрабатываем события
             if e.type == pygame.QUIT:
-                g.quit()
+                self.game.quit()
             if e.type == pygame.KEYDOWN:
-                self.key_down(e.key, g.hero)
+                self.key_event(e.key, True)
             if e.type == pygame.KEYUP:
-                self.key_up(e.key, g.hero)
+                self.key_event(e.key, False)
 
-    def key_down(self, key, hero):
+    def key_event(self, key, down):
         direction = DIR_KEYS.get(key)
         if direction:
-            hero.go(direction, True)
-
-    def key_up(self, key, hero):
-        direction = DIR_KEYS.get(key)
-        if direction:
-            hero.go(direction, False)
+            self.player.go(direction, down)
