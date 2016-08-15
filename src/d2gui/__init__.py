@@ -38,6 +38,8 @@ class GUI():
         self.entities.add(self.player)
 
     def draw(self):
+        self.bg = pygame.image.load(self.game.level.background)
+
         self.screen.blit(self.bg, (0,0))
         self.entities.draw(self.screen)
 

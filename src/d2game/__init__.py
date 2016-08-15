@@ -3,7 +3,7 @@
 
 import game
 import player
-import level
+import d2game.level
 
 STATE_START = 0
 STATE_RUNNING = 1

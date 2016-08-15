@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import config
+import game
+
 from blocks import Platform
 
 LEVEL_MAP = [
@@ -27,6 +30,7 @@ LEVEL_MAP = [
 
 class Level():
     def __init__(self, entities):
+        self.background = "{}/{}".format(config.RES_DIR, game.BACKGROUND_IMAGE)
         self.level_map = LEVEL_MAP
         self.entities = entities
         self.platforms = []
