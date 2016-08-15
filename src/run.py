@@ -2,25 +2,29 @@
 # -*- coding: utf-8 -*-
 
 import config
+import game
 
 import pygame
 from pygame import *
 
 from player import Player
-from blocks import Platform, PLATFORM_WIDTH, PLATFORM_HEIGHT
 from level import Level
 
 RUNNING = True
 
 
-def main():
-    DISPLAY = (config.WIN_WIDTH, config.WIN_HEIGHT) # Группируем ширину и высоту в одну переменную
-    pygame.init() # Инициация PyGame, обязательная строчка
-    screen = pygame.display.set_mode(DISPLAY) # Создаем окошко
-    pygame.display.set_caption("Beat'em Up")
-    bg = Surface(DISPLAY) # Создание видимой поверхности
+def background(display):
+    bg = Surface(display) # Создание видимой поверхности
                           # будем использовать как фон
-    bg.fill(Color(config.BACKGROUND_COLOR))     # Заливаем поверхность сплошным цветом
+    bg.fill(Color(config.BACKGROUND_COLOR)) # Заливаем поверхность сплошным цветом
+    return bg
+
+def main():
+    pygame.init() # Инициация PyGame, обязательная строчка
+    screen = pygame.display.set_mode(config.DISPLAY) # Создаем окошко
+    pygame.display.set_caption(game.TITLE)
+
+    bg = background(config.DISPLAY)
 
     hero = Player(55, 55)
     left = right = False
