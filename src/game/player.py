@@ -145,8 +145,6 @@ class Player(d2game.player.Player):
                 self.rect.top = level.active_rect.bottom - 1
             if yvel < 0:
                 self.rect.bottom = level.active_rect.top + 1
-        else:
-            print("In active")
 
         for p in level.enemies:
             if pygame.sprite.collide_rect(self, p):

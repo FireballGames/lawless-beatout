@@ -17,3 +17,8 @@ class Game(d2game.Game):
     def next_level(self):
         self.level = game.level.Level(self.hero)
         return self.level
+
+    def turn(self):
+        d2game.Game.turn(self)
+        for e in self.level.enemies:
+            e.move(self.level)
