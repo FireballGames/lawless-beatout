@@ -7,7 +7,6 @@ import game.level
 
 
 TITLE = "Beat'em up"
-BACKGROUND_IMAGE = "back.png"
 
 
 class Game(d2game.Game):

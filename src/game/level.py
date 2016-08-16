@@ -4,6 +4,8 @@
 import d2game.level
 
 import config
+import resource
+
 import game
 import game.enemy
 import game.entity
@@ -21,7 +23,7 @@ ENEMY_COUNT = 5
 class Level(d2game.level.Level):
     def __init__(self, player):
         d2game.level.Level.__init__(self, player)
-        self.background = "{}/{}".format(config.RES_DIR, game.BACKGROUND_IMAGE)
+        self.background = resource.BACKGROUND
         self.active_rect = pygame.Rect(ARENA_POS, ARENA_SIZE)
 
     def generate_enemies(self):

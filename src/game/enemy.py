@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import config
+import resource
+
 import pygame
 import game
 
 
 ENEMY_COLOR = "#FF6262"
-ENEMY_IMAGE = config.RES_DIR + "/player/man.png"
+ENEMY_IMAGE = resource.HERO
 MOVE_SPEED = 7
 
 class Enemy(pygame.sprite.Sprite):
