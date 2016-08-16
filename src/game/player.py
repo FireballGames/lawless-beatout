@@ -10,7 +10,7 @@ import pygame
 import pyganim
 
 
-START_POS = (400, 300)
+START_POS = (400, 450)
 PLAYER_SIZE = (73, 100)
 MOVE_SPEED = 7
 TRANSPARENT_COLOR = "#888888"
@@ -131,12 +131,24 @@ class Player(d2game.player.Player):
         self.onGround = True
 
         self.rect.y += self.speed[1]
-        self.collide(0, self.speed[1], level.enemies)
+        self.collide(0, self.speed[1], level)
         self.rect.x += self.speed[0]
-        self.collide(self.speed[0], 0, level.enemies)
+        self.collide(self.speed[0], 0, level)
 
-    def collide(self, xvel, yvel, platforms):
-        for p in platforms:
+    def collide(self, xvel, yvel, level):
+        if not self.rect.colliderect(level.active_rect):
+            if xvel > 0:
+                self.rect.left = level.active_rect.right - 1
+            if xvel < 0:
+                self.rect.right = level.active_rect.left + 1
+            if yvel > 0:
+                self.rect.top = level.active_rect.bottom - 1
+            if yvel < 0:
+                self.rect.bottom = level.active_rect.top + 1
+        else:
+            print("In active")
+
+        for p in level.enemies:
             if pygame.sprite.collide_rect(self, p):
                 if xvel > 0:
                     self.rect.right = p.rect.left
