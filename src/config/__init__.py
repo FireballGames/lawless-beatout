@@ -5,7 +5,7 @@
 import os
 
 
-RES_DIR = "{}/../res".format(os.path.dirname(__file__))
+RES_DIR = "{}/../../res".format(os.path.dirname(__file__))
 WIN_WIDTH = 800 #Ширина создаваемого окна
 WIN_HEIGHT = 600 # Высота
 BACKGROUND_COLOR = "#004400"

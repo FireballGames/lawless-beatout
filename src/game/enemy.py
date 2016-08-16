@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import config
 import pygame
 
 ENEMY_SIZE = (73, 100)
 ENEMY_COLOR = "#FF6262"
-ENEMY_IMAGE = "res/player/man.png"
+ENEMY_IMAGE = config.RES_DIR + "/player/man.png"
 MOVE_SPEED = 7
 
 class Enemy(pygame.sprite.Sprite):
