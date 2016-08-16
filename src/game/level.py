@@ -6,6 +6,7 @@ import d2game.level
 import config
 import game
 import game.enemy
+import game.entity
 
 import pygame
 import random
@@ -27,7 +28,7 @@ class Level(d2game.level.Level):
         enemies = []
         for i in range(ENEMY_COUNT):
             x = random.randint(0, ARENA_SIZE[0]) + ARENA_POS[0]
-            y = random.randint(0, ARENA_SIZE[1]) + ARENA_POS[1] - game.enemy.ENEMY_SIZE[1]
+            y = random.randint(0, ARENA_SIZE[1]) + ARENA_POS[1] - game.entity.SIZE[1]
             enemy = game.enemy.Enemy(x, y)
             enemies.append(enemy)
 

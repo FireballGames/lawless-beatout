@@ -6,7 +6,8 @@ import os
 
 
 RES_DIR = "{}/../../res".format(os.path.dirname(__file__))
-WIN_WIDTH = 800 #Ширина создаваемого окна
-WIN_HEIGHT = 600 # Высота
-BACKGROUND_COLOR = "#004400"
-DISPLAY = (WIN_WIDTH, WIN_HEIGHT) # Группируем ширину и высоту в одну переменную
+
+BLOCK = 24
+WIN_WIDTH = 32 * BLOCK
+WIN_HEIGHT = 24 * BLOCK
+DISPLAY = (WIN_WIDTH, WIN_HEIGHT)

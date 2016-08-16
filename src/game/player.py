@@ -5,13 +5,13 @@ import d2game.player
 
 import game
 import game.animation
+import game.entity
 
 import pygame
 import pyganim
 
 
 START_POS = (400, 450)
-PLAYER_SIZE = (73, 100)
 MOVE_SPEED = 7
 TRANSPARENT_COLOR = "#888888"
 JUMP_POWER = 10
@@ -36,10 +36,10 @@ class Player(d2game.player.Player):
         self.pos = START_POS
         self.speed = [0, 0]
 
-        self.image = pygame.Surface(PLAYER_SIZE)
+        self.image = pygame.Surface(game.entity.SIZE)
         self.image.fill(pygame.Color(TRANSPARENT_COLOR))
 
-        self.rect = pygame.Rect((x, y), PLAYER_SIZE)
+        self.rect = pygame.Rect((x, y), game.entity.SIZE)
         self.onGround = True
 
         s_stay = PlayerState()

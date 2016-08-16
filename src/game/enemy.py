@@ -3,8 +3,9 @@
 
 import config
 import pygame
+import game
 
-ENEMY_SIZE = (73, 100)
+
 ENEMY_COLOR = "#FF6262"
 ENEMY_IMAGE = config.RES_DIR + "/player/man.png"
 MOVE_SPEED = 7
@@ -13,8 +14,8 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
 
-        self.width = ENEMY_SIZE[0]
-        self.height = ENEMY_SIZE[1]
+        self.width = game.entity.SIZE[0]
+        self.height = game.entity.SIZE[1]
 
         # self.image = Surface((self.width, self.height))
         # self.image.fill(Color(PLATFORM_COLOR))
