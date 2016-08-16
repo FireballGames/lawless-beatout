@@ -14,8 +14,9 @@ import pygame
 import random
 
 
-ARENA_POS = (100, 400)
-ARENA_SIZE = (600, 100)
+ARENA_POS = (2 * config.BLOCK, 16 * config.BLOCK)
+ARENA_SIZE = (28 * config.BLOCK, 3 * config.BLOCK)
+
 ENEMY_COUNT = 5
 # GRAVITY = 0.35
 
@@ -30,7 +31,7 @@ class Level(d2game.level.Level):
         enemies = []
         for i in range(ENEMY_COUNT):
             x = random.randint(0, ARENA_SIZE[0]) + ARENA_POS[0]
-            y = random.randint(0, ARENA_SIZE[1]) + ARENA_POS[1] - game.entity.SIZE[1]
+            y = random.randint(0, ARENA_SIZE[1]) + ARENA_POS[1]
             enemy = game.enemy.Enemy(x, y)
             enemies.append(enemy)
 
