@@ -66,8 +66,8 @@ class Entity(d2game.player.Player):
             "down": s_down,
         }
 
-        s_right.set_animation(pyganim.PygAnimation(game.animation.RIGHT))
-        s_left.set_animation(pyganim.PygAnimation(game.animation.LEFT))
+        s_right.set_animation(pyganim.PygAnimation(game.animation.MOVE))
+        s_left.set_animation(pyganim.PygAnimation(game.animation.MOVE))
         s_stay.set_animation(pyganim.PygAnimation(game.animation.STAY))
 
         s_jump_left.set_animation(pyganim.PygAnimation(game.animation.JUMP_LEFT))
