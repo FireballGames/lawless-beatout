@@ -5,4 +5,6 @@ import config
 
 
 BACKGROUND = "{}/back.png".format(config.RES_DIR)
-HERO = "{}/player/man.png".format(config.RES_DIR)
+HERO = "{}/player/hero_walkright.png".format(config.RES_DIR)
+
+HERO_SIZE = (90, 173)

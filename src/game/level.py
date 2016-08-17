@@ -14,10 +14,15 @@ import pygame
 import random
 
 
-ARENA_POS = (2 * config.BLOCK, 16 * config.BLOCK)
-ARENA_SIZE = (28 * config.BLOCK, 3 * config.BLOCK)
+ARENA_WIDTH = config.WIN_WIDTH - (resource.HERO_SIZE[0] * 2)
+ARENA_HEIGHT = 72 # 148
 
-ENEMY_COUNT = 5
+ARENA_Y = config.WIN_HEIGHT - ARENA_HEIGHT - resource.HERO_SIZE[1] # config.WIN_HEIGHT - ARENA_HEIGHT
+
+ARENA_POS = (resource.HERO_SIZE[0], ARENA_Y) # (2 * config.BLOCK, 16 * config.BLOCK)
+ARENA_SIZE = (ARENA_WIDTH, ARENA_HEIGHT) # (28 * config.BLOCK, 3 * config.BLOCK)
+
+ENEMY_COUNT = 0
 # GRAVITY = 0.35
 
 

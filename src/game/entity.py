@@ -11,10 +11,9 @@ import d2game.player
 import game.animation
 
 
-SIZE = (2 * config.BLOCK, 5 * config.BLOCK)
-TRANSPARENT = "#888888"
-MOVE_SPEED = config.BLOCK
-JUMP_POWER = config.BLOCK
+TRANSPARENT = "#FF00FF"
+MOVE_SPEED = 8 # config.BLOCK
+JUMP_POWER = 8 # config.BLOCK
 
 
 class EntityState():
@@ -24,27 +23,30 @@ class EntityState():
 
     def animate(self, entity):
         entity.image.fill(pygame.Color(TRANSPARENT))
-        self.anim.blit(entity.image, (0,0))
+        # self.anim.blit(pygame.transform.flip(entity.image, self.flip[0], self.flip[1]), (0,0))
+        s = entity.image
+        self.anim.blit(s, (0,0))
 
     def set_animation(self, animation):
         self.anim = animation
+        self.anim.convert_alpha()
         self.anim.play()
 
 class Entity(d2game.player.Player):
     def __init__(self, x, y):
         d2game.player.Player.__init__(self)
 
-        self.width = SIZE[0]
-        self.height = SIZE[1]
+        self.width = resource.HERO_SIZE[0]
+        self.height = resource.HERO_SIZE[1]
 
-        self.image = pygame.Surface(SIZE)
+        self.image = pygame.Surface(resource.HERO_SIZE)
         self.image.fill(pygame.Color(TRANSPARENT))
-        self.rect = pygame.Rect((x, y), SIZE)
+        self.rect = pygame.Rect((x, y), resource.HERO_SIZE)
         self.image.set_colorkey(pygame.Color(TRANSPARENT))
 
-        self.speed = [0, 0]        
+        self.speed = [0, 0]
         self.onGround = True
-        
+
         s_stay = game.entity.EntityState()
         s_right = game.entity.EntityState()
         s_left = game.entity.EntityState()
@@ -73,10 +75,12 @@ class Entity(d2game.player.Player):
 
         s_up.set_animation(pyganim.PygAnimation(game.animation.JUMP))
         s_down.set_animation(pyganim.PygAnimation(game.animation.JUMP))
-        
+
+        s_left.anim.flip(True, False)
+
         self.state = s_stay
         self.state.animate(self)
-        
+
 
     def go(self, direction, going):
         self.states[direction].value = going
@@ -92,8 +96,8 @@ class Entity(d2game.player.Player):
             self.speed[1] = -JUMP_POWER
 
     def fall(self):
-        self.speed[1] += 0 # GRAVITY        
-        
+        self.speed[1] += 0 # GRAVITY
+
     def update(self, level):
         if self.is_going("left"):
             self.speed[0] = -MOVE_SPEED
@@ -127,7 +131,7 @@ class Entity(d2game.player.Player):
         self.collide((0, self.speed[1]), level)
         self.collide((self.speed[0], 0), level)
         # self.collide(self.speed, level)
-        
+
     def collide(self, speed, level):
         if not self.rect.colliderect(level.active_rect):
             if speed[0] > 0:
