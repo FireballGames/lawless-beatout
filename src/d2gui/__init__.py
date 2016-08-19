@@ -17,7 +17,7 @@ DIR_KEYS = {
 def background(display):
     bg = pygame.Surface(display) # Создание видимой поверхности
                           # будем использовать как фон
-    bg.fill(pygame.Color(config.BACKGROUND_COLOR)) # Заливаем поверхность сплошным цветом
+    # bg.fill(pygame.Color(config.BACKGROUND_COLOR)) # Заливаем поверхность сплошным цветом
     return bg
 
 

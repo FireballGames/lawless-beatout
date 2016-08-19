@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import resource
+
+
 DELAY = 100
-RIGHT = [('res/player/man.png', DELAY)]
-LEFT = [('res/player/man.png', DELAY)]
-JUMP_RIGHT = [('res/player/man.png', DELAY)]
-JUMP_LEFT = [('res/player/man.png', DELAY)]
-JUMP = [('res/player/man.png', DELAY)]
-STAY = [('res/player/man.png', DELAY)]
+RIGHT = [(resource.HERO, DELAY)]
+LEFT = [(resource.HERO, DELAY)]
+JUMP_RIGHT = [(resource.HERO, DELAY)]
+JUMP_LEFT = [(resource.HERO, DELAY)]
+JUMP = [(resource.HERO, DELAY)]
+STAY = [(resource.HERO, DELAY)]
