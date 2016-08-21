@@ -14,6 +14,9 @@ import game.animation
 TRANSPARENT = "#FF00FF"
 MOVE_SPEED = 8 # config.BLOCK
 JUMP_POWER = 8 # config.BLOCK
+SIZE = (16, 40) # (2 * config.BLOCK, 5 * config.BLOCK)
+ORIENTATION_RIGHT = 1
+ORIENTATION_LEFT = 2
 
 
 class EntityState():
@@ -24,8 +27,7 @@ class EntityState():
     def animate(self, entity):
         entity.image.fill(pygame.Color(TRANSPARENT))
         # self.anim.blit(pygame.transform.flip(entity.image, self.flip[0], self.flip[1]), (0,0))
-        s = entity.image
-        self.anim.blit(s, (0,0))
+        self.anim.blit(entity.image, (0, 0))
 
     def set_animation(self, animation):
         self.anim = animation
@@ -46,6 +48,7 @@ class Entity(d2game.player.Player):
 
         self.speed = [0, 0]
         self.onGround = True
+        self.orientation = ORIENTATION_RIGHT
 
         s_stay = game.entity.EntityState()
         s_right = game.entity.EntityState()
