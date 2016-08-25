@@ -75,6 +75,8 @@ class GUI():
                 self.key_event(e.key, False)
 
     def key_event(self, key, down):
+        if key == pygame.K_ESCAPE:
+            self.game.quit()
         direction = DIR_KEYS.get(key)
         if direction:
             self.player.go(direction, down)
