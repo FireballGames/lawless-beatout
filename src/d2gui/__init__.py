@@ -17,16 +17,16 @@ DIR_KEYS = {
 def load_image(name):
     try:
         image = pygame.image.load(name)
-    except pygame.error, message:
+    except pygame.error as e:
         print("Can't load image: {}".format(name))
-        raise SystemExit, message
+        raise SystemExit(e)
     image = image.convert_alpha()
     return image, image.get_rect()
 
 
 def background(background):
     screen = pygame.display.get_surface()
-    bg = pygame.Surface(screen.get_size()) # (display) # Создание видимой поверхности
+    bg = pygame.Surface(screen.get_size())  # (display) # Создание видимой поверхности
     bg = bg.convert()
     # bg.fill(pygame.Color(config.BACKGROUND_COLOR)) # Заливаем поверхность сплошным цветом
     bg.fill((0, 0, 0))
@@ -44,7 +44,8 @@ class GUI():
         pygame.display.set_caption(game.TITLE)
 
         # self.bg = background(config.DISPLAY)
-        self.entities = None # pygame.sprite.Group()
+        # self.entities = pygame.sprite.Group()
+        self.entities = None
         self.timer = pygame.time.Clock()
         self.game = None
         self.player = None
@@ -58,7 +59,7 @@ class GUI():
         # self.bg = pygame.image.load(self.game.level.background)
 
         # self.window.blit(self.bg, (0,0))
-        self.bg = background(self.game.level.background) # config.DISPLAY)
+        self.bg = background(self.game.level.background)  # config.DISPLAY)
         self.game.level.entities.draw(self.window)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
