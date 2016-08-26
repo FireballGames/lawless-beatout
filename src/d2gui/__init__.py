@@ -6,14 +6,6 @@ import config
 import game
 
 
-DIR_KEYS = {
-    pygame.K_LEFT: "left",
-    pygame.K_RIGHT: "right",
-    pygame.K_UP: "up",
-    pygame.K_DOWN: "down",
-}
-
-
 def load_image(name):
     try:
         image = pygame.image.load(name)
@@ -40,7 +32,7 @@ def background(background):
 class GUI():
     def __init__(self):
         pygame.init()
-        self.window = pygame.display.set_mode(config.DISPLAY)
+        self.window = pygame.display.set_mode(config.config["window"]["size"])
         pygame.display.set_caption(game.TITLE)
 
         # self.bg = background(config.DISPLAY)
@@ -59,24 +51,21 @@ class GUI():
         # self.bg = pygame.image.load(self.game.level.background)
 
         # self.window.blit(self.bg, (0,0))
-        self.bg = background(self.game.level.background)  # config.DISPLAY)
+        self.bg = background(self.game.level.background)
         self.game.level.entities.draw(self.window)
 
         pygame.display.update()     # обновление и вывод всех изменений на экран
         self.timer.tick(30)
 
     def process_events(self):
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 self.game.quit()
-            if e.type == pygame.KEYDOWN:
-                self.key_event(e.key, True)
-            if e.type == pygame.KEYUP:
-                self.key_event(e.key, False)
+            if event.type == pygame.KEYDOWN:
+                self.key_event(event.key, True)
+            if event.type == pygame.KEYUP:
+                self.key_event(event.key, False)
 
     def key_event(self, key, down):
         if key == pygame.K_ESCAPE:
             self.game.quit()
-        direction = DIR_KEYS.get(key)
-        if direction:
-            self.player.go(direction, down)
