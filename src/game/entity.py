@@ -14,6 +14,9 @@ import game.animation
 TRANSPARENT = "#FF00FF"
 MOVE_SPEED = 8 # config.BLOCK
 JUMP_POWER = 8 # config.BLOCK
+SIZE = (16, 40) # (2 * config.BLOCK, 5 * config.BLOCK)
+ORIENTATION_RIGHT = 1
+ORIENTATION_LEFT = 2
 
 
 class EntityState():
@@ -24,8 +27,7 @@ class EntityState():
     def animate(self, entity):
         entity.image.fill(pygame.Color(TRANSPARENT))
         # self.anim.blit(pygame.transform.flip(entity.image, self.flip[0], self.flip[1]), (0,0))
-        s = entity.image
-        self.anim.blit(s, (0,0))
+        self.anim.blit(entity.image, (0, 0))
 
     def set_animation(self, animation):
         self.anim = animation
@@ -46,8 +48,10 @@ class Entity(d2game.player.Player):
 
         self.speed = [0, 0]
         self.onGround = True
+        self.orientation = ORIENTATION_RIGHT
 
-        s_stay = game.entity.EntityState()
+        s_stay_right = game.entity.EntityState()
+        s_stay_left = game.entity.EntityState()
         s_right = game.entity.EntityState()
         s_left = game.entity.EntityState()
         s_up = game.entity.EntityState()
@@ -56,7 +60,8 @@ class Entity(d2game.player.Player):
         s_jump_left = game.entity.EntityState()
 
         self.states = {
-            "stay": s_stay,
+            "stay_right": s_stay_right,
+            "stay_left": s_stay_left,
             "right": s_right,
             "left": s_left,
             "jump": s_jump_right,
@@ -68,7 +73,8 @@ class Entity(d2game.player.Player):
 
         s_right.set_animation(pyganim.PygAnimation(game.animation.MOVE))
         s_left.set_animation(pyganim.PygAnimation(game.animation.MOVE))
-        s_stay.set_animation(pyganim.PygAnimation(game.animation.STAY))
+        s_stay_right.set_animation(pyganim.PygAnimation(game.animation.STAY))
+        s_stay_left.set_animation(pyganim.PygAnimation(game.animation.STAY))
 
         s_jump_left.set_animation(pyganim.PygAnimation(game.animation.JUMP_LEFT))
         s_jump_right.set_animation(pyganim.PygAnimation(game.animation.JUMP_RIGHT))
@@ -77,12 +83,18 @@ class Entity(d2game.player.Player):
         s_down.set_animation(pyganim.PygAnimation(game.animation.JUMP))
 
         s_left.anim.flip(True, False)
+        s_stay_left.anim.flip(True, False)
 
-        self.state = s_stay
+        self.state = s_stay_right
         self.state.animate(self)
 
 
     def go(self, direction, going):
+        if direction == "left":
+            self.orientation= ORIENTATION_LEFT
+        elif direction == "right":
+            self.orientation = ORIENTATION_RIGHT
+
         self.states[direction].value = going
 
     def is_going(self, direction):
@@ -109,7 +121,10 @@ class Entity(d2game.player.Player):
         if self.is_staying():
             self.speed[0] = 0
             self.speed[1] = 0
-            self.states["stay"].animate(self)
+            if self.orientation == ORIENTATION_RIGHT:
+                self.states["stay_right"].animate(self)
+            if self.orientation == ORIENTATION_LEFT:
+                self.states["stay_left"].animate(self)
 
         if self.is_going("up"):
             self.speed[1] = -MOVE_SPEED

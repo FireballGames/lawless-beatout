@@ -1,19 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 
 import config
 
-import game
-import d2gui
 
 def main():
-    config.RES_DIR = "{}/../res".format(os.path.dirname(os.path.abspath(__file__)))
+    import os
 
-    gui = d2gui.GUI()
+    # config.RES_DIR = "{}/../res".format(os.path.dirname(os.path.abspath(__file__)))
+    config.ROOT_DIR = "{}/..".format(os.path.dirname(os.path.abspath(__file__)))
+    config.load()
+
+    import game
+    import game.gui
+
+    gui = game.gui.GUI()
     g = game.Game()
-
     gui.set_game(g)
     g.run()
 
