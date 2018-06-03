@@ -1,32 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Импортируем библиотеку pygame
-import pygame
-from pygame import *
 
-#Объявляем переменные
-WIN_WIDTH = 800 #Ширина создаваемого окна
-WIN_HEIGHT = 640 # Высота
-DISPLAY = (WIN_WIDTH, WIN_HEIGHT) # Группируем ширину и высоту в одну переменную
-BACKGROUND_COLOR = "#004400"
+import config
 
 
 def main():
-    pygame.init() # Инициация PyGame, обязательная строчка
-    screen = pygame.display.set_mode(DISPLAY) # Создаем окошко
-    pygame.display.set_caption("Super Mario Boy") # Пишем в шапку
-    bg = Surface((WIN_WIDTH,WIN_HEIGHT)) # Создание видимой поверхности
-                                         # будем использовать как фон
-    bg.fill(Color(BACKGROUND_COLOR))     # Заливаем поверхность сплошным цветом
+    import os
 
-    while 1: # Основной цикл программы
-        for e in pygame.event.get(): # Обрабатываем события
-            if e.type == QUIT:
-                raise SystemExit, "QUIT"
-        screen.blit(bg, (0,0))      # Каждую итерацию необходимо всё перерисовывать
-        pygame.display.update()     # обновление и вывод всех изменений на экран
+    # config.RES_DIR = "{}/../res".format(os.path.dirname(os.path.abspath(__file__)))
+    config.ROOT_DIR = "{}/..".format(os.path.dirname(os.path.abspath(__file__)))
+    config.load()
 
+    import game
+    import game.gui
+
+    gui = game.gui.GUI()
+    g = game.Game()
+    gui.set_game(g)
+    g.run()
+
+    while g.is_running():
+        gui.process_events()
+        g.turn()
+        gui.draw()
+    g.quit()
 
 if __name__ == "__main__":
     main()
